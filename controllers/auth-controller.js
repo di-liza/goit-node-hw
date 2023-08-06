@@ -54,7 +54,7 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
   const { _id } = req.user;
   await User.findByIdAndUpdate(_id, { token: "" });
-  res.status(204);
+  res.status(204).json();
 };
 
 const getCurrent = async (req, res) => {
