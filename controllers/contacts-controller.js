@@ -11,10 +11,10 @@ const getAll = async (req, res) => {
   const conditions = { owner };
   if (favorite === "true") conditions.favorite = true;
 
-  const result = await Contact.find(conditions, "-createdAt -updatedAt", {
+  const result = await Contact.find({ owner }, "-createdAt -updatedAt", {
     skip,
     limit,
-  }).populate("owner", "email subscription"); // Якщо ми хочемо знайти всі об'єкти коллекції то викоистовуємо метод find()
+  }).populate("owner", "email subscription");
   res.json(result);
 };
 
@@ -31,7 +31,8 @@ const getById = async (req, res) => {
 
 // * Post NEW
 const add = async (req, res) => {
-  const result = await Contact.create(req.body);
+  const { _id: owner } = req.user;
+  const result = await Contact.create({ ...req.body, owner });
   if (!result) throw HttpError(404, "missing required name field");
   res.status(201).json(result);
 };
