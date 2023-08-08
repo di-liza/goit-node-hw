@@ -29,3 +29,20 @@
 - `npm run start:dev` &mdash; старт сервера в режимі розробки (development)
 - `npm run lint` &mdash; запустити виконання перевірки коду з eslint, необхідно виконувати перед кожним PR та виправляти всі помилки лінтера
 - `npm lint:fix` &mdash; та ж перевірка лінтера, але з автоматичними виправленнями простих помилок
+
+<!-- ====================================== -->
+
+"email": "Madge67@example.org",
+"password": "8_8u8EmJYNBDIlY"
+
+1. У папці middlewares => touch (upload.js) => inport multer => створюємо мидлвару (upload) в якій викликаємо multer як функцію і передаємо об'єкт налаштувань
+   - треба створити налаштування storage => multer.diskStorage => destination(шлях до тимчасової папки зберігання файлу => temp (пусті папки не пушаться на гіт тому додати файл - .gitkeep));
+   - const destination = path.resolve("tepmp"); // метод resolve перед початком ім'я папки/фалу дописує шлях до корня проєкту;
+   - filename: (req, file, cb) => {
+     cb(null, file.originalname);
+     } // приймає кол бек, реквест і сам файл, коллбек передає далі, якщо помилка є то першим аргументом передаємо її, якщо немає, тоді null і потім ім'я під яким бажаємо зберігти файл, file.originalname - це буде та назва з якою файл було передано;
+   - імена можуть бути однаковими тому робимо кожне оригінальним:
+     const uniquePreffix = Date.now() + "-" + Math.round(Math.random() \* 1e9);
+     const fileName = `${uniquePreffix}_${file.originalname}`;
+   - limits;
+2.
