@@ -18,6 +18,8 @@ const register = async (req, res) => {
   const newPath = path.join(avatarPath, filename);
   await fs.rename(oldPAth, newPath);
 
+  const avatarURL = path.join("public", "avatars", filename);
+
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
@@ -25,11 +27,16 @@ const register = async (req, res) => {
 
   const hashPassword = await bcrypt.hash(password, 10);
 
-  const newUser = await User.create({ ...req.body, password: hashPassword });
+  const newUser = await User.create({
+    ...req.body,
+    avatarURL,
+    password: hashPassword,
+  });
 
   res.status(201).json({
     user: {
       email: newUser.email,
+      avatarURL: newUser.avatarURL,
       subscription: newUser.subscription,
     },
   });
