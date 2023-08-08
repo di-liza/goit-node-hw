@@ -3,12 +3,13 @@ import express from "express";
 import ctrl from "../../../controllers/auth-controller.js";
 import { validateBody } from "../../../decorators/index.js";
 import { schemas } from "../../../models/user.js";
-import { authenticate } from "../../../middlewars/index.js";
+import { authenticate, upload } from "../../../middlewars/index.js";
 
 const authRouter = express.Router();
 
 authRouter.post(
   "/register",
+  upload.single("avatar"),
   validateBody(schemas.registerSchema),
   ctrl.register
 );

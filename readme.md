@@ -45,4 +45,4 @@
      const uniquePreffix = Date.now() + "-" + Math.round(Math.random() \* 1e9);
      const fileName = `${uniquePreffix}_${file.originalname}`;
    - limits;
-2.
+2. В authRouter додаємо міддлвару upload при реєстрації користувача і вказуємо яке ім'я файлу очікуємо, за допомогою методу single: upload.single("avatar"), можливі варінти, 33:35;

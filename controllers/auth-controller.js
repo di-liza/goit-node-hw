@@ -10,6 +10,9 @@ dotenv.config();
 const { SECRET_KEY } = process.env;
 
 const register = async (req, res) => {
+  console.log("req.body:", req.body);
+  console.log("req.file:", req.file);
+
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 

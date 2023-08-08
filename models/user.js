@@ -2,7 +2,6 @@ import Joi from "joi";
 import { Schema, model } from "mongoose";
 import hooks from "./hooks.js";
 import { emailRegxp, subscriptionList } from "../constants/authConstants.js";
-// import { handleMongooseError } from "../helpers/index.js";
 
 const userSchema = new Schema(
   {
