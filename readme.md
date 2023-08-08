@@ -46,3 +46,4 @@
      const fileName = `${uniquePreffix}_${file.originalname}`;
    - limits;
 2. В authRouter додаємо міддлвару upload при реєстрації користувача і вказуємо яке ім'я файлу очікуємо, за допомогою методу single: upload.single("avatar"), можливі варінти, 33:35;
+3. Переміщення файлу з папки temp в папку public: await fs.rename(); rename - відповідає за переміщення, перший аргумент це старий шлях файлу, другий новий;

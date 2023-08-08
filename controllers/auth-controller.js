@@ -1,17 +1,22 @@
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
+import fs from "fs/promises";
+import jwt from "jsonwebtoken";
+import path from "path";
 
-import User from "../models/user.js";
 import { CtrlWrapper } from "../decorators/index.js";
 import { HttpError } from "../helpers/index.js";
+import User from "../models/user.js";
+
+const avatarPath = path.resolve("public", "avatars");
 
 dotenv.config();
 const { SECRET_KEY } = process.env;
 
 const register = async (req, res) => {
-  console.log("req.body:", req.body);
-  console.log("req.file:", req.file);
+  const { path: oldPAth, filename } = req.file;
+  const newPath = path.join(avatarPath, filename);
+  await fs.rename(oldPAth, newPath);
 
   const { email, password } = req.body;
   const user = await User.findOne({ email });
