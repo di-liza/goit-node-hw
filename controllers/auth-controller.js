@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import fs from "fs/promises";
 import jwt from "jsonwebtoken";
 import path from "path";
+import gravatar from "gravatar";
 
 import { CtrlWrapper } from "../decorators/index.js";
 import { HttpError } from "../helpers/index.js";
@@ -14,14 +15,21 @@ dotenv.config();
 const { SECRET_KEY } = process.env;
 
 const register = async (req, res) => {
-  const { path: oldPAth, filename } = req.file;
-  const newPath = path.join(avatarPath, filename);
-  await fs.rename(oldPAth, newPath);
+  // const { path: oldPAth, filename } = req.file;
+  // const newPath = path.join(avatarPath, filename);
+  // await fs.rename(oldPAth, newPath);
 
-  const avatarURL = path.join("public", "avatars", filename);
+  // const avatarURL = path.join("avatars", filename);
 
   const { email, password } = req.body;
+  console.log("email:", email);
   const user = await User.findOne({ email });
+
+  const avatarURL = gravatar.url(email, {
+    s: "200",
+    r: "pg",
+    d: "404",
+  });
 
   if (user) throw HttpError(409, "Email in use");
 
