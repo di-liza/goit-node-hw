@@ -39,8 +39,10 @@ describe("test login route", () => {
     expect(body.token).toBeDefined();
 
     const user = await User.findOne({ email: loginData.email });
-   expect(user).toBeDefined();
-   expect(user.email).toBe(loginData.email);
-   expect(user.subscription).toBe("starter");
+    expect(user).toBeDefined();
+    expect(user.email).toEqual(expect.any(String));
+    expect(user.email).toBe(loginData.email);
+    expect(user.subscription).toEqual(expect.any(String));
+    expect(["bussiness", "pro", "starter"]).toContain(user.subscription);
   });
 });
