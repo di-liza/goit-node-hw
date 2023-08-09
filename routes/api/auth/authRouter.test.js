@@ -1,7 +1,6 @@
+import "dotenv/config";
 import mongoose from "mongoose";
 import request from "supertest";
-import jwt from "jsonwebtoken";
-import "dotenv/config";
 
 import { app } from "../../../app.js";
 import User from "../../../models/user.js";
@@ -27,7 +26,7 @@ describe("test login route", () => {
 
   it("test login with correct data", async () => {
     const loginData = {
-      email: "liza.diachenko.99@gmail.com",
+      email: "Elyse.Brakus@example.net",
       password: "_DM7WIx5nI51GjM",
     };
 
