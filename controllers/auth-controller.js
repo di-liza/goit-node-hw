@@ -1,9 +1,10 @@
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import fs from "fs/promises";
+import gravatar from "gravatar";
+import jimp from "jimp";
 import jwt from "jsonwebtoken";
 import path from "path";
-import gravatar from "gravatar";
 
 import { CtrlWrapper } from "../decorators/index.js";
 import { HttpError } from "../helpers/index.js";
@@ -86,14 +87,19 @@ const updateSubscription = async (req, res) => {
 const updateAvatar = async (req, res) => {
   const { path: oldPath, filename } = req.file;
   const newPath = path.join(avatarPath, filename);
-  await fs.rename(oldPath, newPath);
+
+  const image = await jimp.read(oldPath);
+  await image.resize(250, 250).write(newPath);
+
+  await fs.unlink(oldPath);
+
   const avatarURL = path.join("avatars", filename);
 
   const { _id } = req.user;
   await User.findByIdAndUpdate(_id, { avatarURL });
 
   res.status(200).json({
-    avatarURL, // Не вказуємо ключ `avatarURL` тут, лише значення
+    avatarURL,
   });
 };
 
