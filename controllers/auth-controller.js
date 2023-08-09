@@ -77,6 +77,9 @@ const getCurrent = async (req, res) => {
 };
 
 const updateSubscription = async (req, res) => {
+  const { _id } = req.user;
+  const subscription = req.body;
+  await User.findByIdAndUpdate(_id, { subscription });
   res.json(req.body);
 };
 
@@ -85,6 +88,9 @@ const updateAvatar = async (req, res) => {
   const newPath = path.join(avatarPath, filename);
   await fs.rename(oldPath, newPath);
   const avatarURL = path.join("avatars", filename);
+
+  const { _id } = req.user;
+  await User.findByIdAndUpdate(_id, { avatarURL });
 
   res.status(200).json({
     avatarURL, // Не вказуємо ключ `avatarURL` тут, лише значення
