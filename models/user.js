@@ -69,10 +69,13 @@ const updateSubscriptionSchema = Joi.object({
     }),
 });
 
+const updateAvatarSchema = Joi.object({});
+
 export const schemas = {
   registerSchema,
   loginSchema,
   updateSubscriptionSchema,
+  updateAvatarSchema,
 };
 
 const User = model("user", userSchema);

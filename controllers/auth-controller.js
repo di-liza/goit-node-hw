@@ -15,15 +15,9 @@ dotenv.config();
 const { SECRET_KEY } = process.env;
 
 const register = async (req, res) => {
-  // const { path: oldPAth, filename } = req.file;
-  // const newPath = path.join(avatarPath, filename);
-  // await fs.rename(oldPAth, newPath);
-
-  // const avatarURL = path.join("avatars", filename);
-
   const { email, password } = req.body;
-  console.log("email:", email);
   const user = await User.findOne({ email });
+  if (user) throw HttpError(409, "Email in use");
 
   const avatarURL = gravatar.url(email, {
     s: "200",
@@ -31,10 +25,7 @@ const register = async (req, res) => {
     d: "404",
   });
 
-  if (user) throw HttpError(409, "Email in use");
-
   const hashPassword = await bcrypt.hash(password, 10);
-
   const newUser = await User.create({
     ...req.body,
     avatarURL,
@@ -89,10 +80,22 @@ const updateSubscription = async (req, res) => {
   res.json(req.body);
 };
 
+const updateAvatar = async (req, res) => {
+  const { path: oldPath, filename } = req.file;
+  const newPath = path.join(avatarPath, filename);
+  await fs.rename(oldPath, newPath);
+  const avatarURL = path.join("avatars", filename);
+
+  res.status(200).json({
+    avatarURL, // Не вказуємо ключ `avatarURL` тут, лише значення
+  });
+};
+
 export default {
   register: CtrlWrapper(register),
   login: CtrlWrapper(login),
   logout: CtrlWrapper(logout),
   getCurrent: CtrlWrapper(getCurrent),
   updateSubscription: CtrlWrapper(updateSubscription),
+  updateAvatar: CtrlWrapper(updateAvatar),
 };

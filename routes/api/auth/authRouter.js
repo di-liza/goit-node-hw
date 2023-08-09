@@ -9,7 +9,6 @@ const authRouter = express.Router();
 
 authRouter.post(
   "/register",
-  upload.single("avatar"),
   validateBody(schemas.registerSchema),
   ctrl.register
 );
@@ -23,6 +22,14 @@ authRouter.patch(
   authenticate,
   validateBody(schemas.updateSubscriptionSchema),
   ctrl.updateSubscription
+);
+
+authRouter.patch(
+  "/avatars",
+  authenticate,
+  upload.single("avatar"),
+  validateBody(schemas.updateAvatarSchema),
+  ctrl.updateAvatar
 );
 
 export default authRouter;
