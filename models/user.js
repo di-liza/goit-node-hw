@@ -49,6 +49,10 @@ const loginSchema = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
+const emailVerifySchema = Joi.object({
+  email: Joi.string().pattern(emailRegxp).required(),
+});
+
 const registerSchema = Joi.object({
   email: Joi.string().pattern(emailRegxp).required().messages({
     "string.base": `email should be a type of 'text'`,
@@ -84,6 +88,7 @@ export const schemas = {
   loginSchema,
   updateSubscriptionSchema,
   updateAvatarSchema,
+  emailVerifySchema,
 };
 
 const User = model("user", userSchema);
