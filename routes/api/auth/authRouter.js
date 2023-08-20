@@ -13,6 +13,13 @@ authRouter.post(
   ctrl.register
 );
 
+authRouter.get("/verify/:verificationToken", ctrl.verifyEmail);
+
+authRouter.post(
+  "/verify",
+  validateBody(schemas.emailVerifySchema),
+  ctrl.resendVerifyEmail
+);
 authRouter.post("/login", validateBody(schemas.loginSchema), ctrl.login);
 authRouter.post("/logout", authenticate, ctrl.logout);
 authRouter.get("/current", authenticate, ctrl.getCurrent);

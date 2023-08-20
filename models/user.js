@@ -28,6 +28,14 @@ const userSchema = new Schema(
     avatarURL: {
       type: String,
     },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, "Verify token is required"],
+    },
   },
   { versionKey: false }
 );
@@ -39,6 +47,14 @@ userSchema.pre("findOneAndUpdate", hooks.validateAtUpdate);
 const loginSchema = Joi.object({
   email: Joi.string().pattern(emailRegxp).required(),
   password: Joi.string().min(6).required(),
+});
+
+const emailVerifySchema = Joi.object({
+  email: Joi.string().pattern(emailRegxp).required().messages({
+    "string.base": `email should be a type of 'text'`,
+    "string.empty": `email cannot be an empty field`,
+    "any.required": `email is a required field`,
+  }),
 });
 
 const registerSchema = Joi.object({
@@ -76,6 +92,7 @@ export const schemas = {
   loginSchema,
   updateSubscriptionSchema,
   updateAvatarSchema,
+  emailVerifySchema,
 };
 
 const User = model("user", userSchema);
